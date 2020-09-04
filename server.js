@@ -34,13 +34,10 @@ connection.connect(function(err) {
         // based on their answer, either call the bid or the post functions
         if (answer.choices === "Show Departments") {
           showDept();
-        }
-        else if(answer.choices === "Show Employees") {
+        } else if(answer.choices === "Show Employees") {
           showEmployees();
         } else if(answer.choices === "Show Roles") {
             showRoles();
-        } else if(answer.choices === "Show Department") {
-            showDept();
         } else if(answer.choices === "Add Employees") {
             addEmployees();
         } else if(answer.choices === "Add Role") {
@@ -54,5 +51,28 @@ connection.connect(function(err) {
 }
 
 function showDept() {
-    inquirer
+    console.log("Showing Departments...\n");
+    connection.query("SELECT name FROM department", function(err, res) {
+        if (err) throw err;
+        console.log(res);
+        connection.end();
+    });
+}
+
+function showEmployees() {
+    console.log("Showing Employees...\n");
+    connection.query("SELECT first_name, last_name FROM employee", function(err, res) {
+        if (err) throw err;
+        console.log(res);
+        connection.end();
+    });
+}
+
+function showRoles() {
+    console.log("Showing Roles...\n");
+    connection.query("SELECT title FROM role", function(err, res) {
+        if (err) throw err;
+        console.log(res);
+        connection.end();
+    });
 }
