@@ -31,7 +31,7 @@ connection.connect(function(err) {
         choices: ["Show Departments", "Show Employees", "Show Roles", "Show Department", "Add Employees", "Add Role", "Update Employee Role", "End"]
       })
       .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
+        // based on their answer, call the appropriate function
         if (answer.choices === "Show Departments") {
           showDept();
         } else if(answer.choices === "Show Employees") {
@@ -40,8 +40,6 @@ connection.connect(function(err) {
             showRoles();
         } else if(answer.choices === "Add Employees") {
             addEmployees();
-        } else if(answer.choices === "Add Role") {
-            addRole();
         } else if(answer.choices === "Update Employee Role") {
             updateRole();
         } else if(answer.choices === "End") {
@@ -75,4 +73,50 @@ function showRoles() {
         console.log(res);
         connection.end();
     });
+}
+
+function addEmployees() {
+    inquirer
+        .prompt([
+            {
+                name: "firstName",
+                type: "input",
+                message: "What is the Employee's first name?"
+            },
+            {
+                name: "lastName",
+                type: "input",
+                message: "What is the employee's last name?"
+            },
+            {
+                name: "roleID",
+                type: "input",
+                message: "What is the employee's role?"
+            },
+            {
+                name: "managerID",
+                type: "input",
+                message: "Who is the employee's manager?"
+            }
+        ])
+        .then(function(answer) {
+            connection.query(
+                "INSERT INTO employee SET ?",
+                {
+                    first_name: answer.firstName,
+                    last_name: answer.lastName,
+                    role_id: answer.roleID,
+                    manager_id: answer.managerID
+                },
+                function(err) {
+                    if (err) throw err;
+                    console.log("Employee added successfully!");
+                    start();
+                }
+            );
+        });
+}
+
+function updateRole () {
+    inquirer
 }
